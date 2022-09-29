@@ -482,67 +482,54 @@ The output motion should faithfully animate the input action, and at the same ti
 </section>
 
 
-<!-- 
 
 <section class="section hero is-light">
   <div class="container is-max-desktop">
-    <!~~ Abstract. ~~>
+    <!-- Abstract. -->
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
         <h2 class="title is-3">Motion Editing</h2>
           <p>
-Action-to-motion is the task of generating motion given an input action class, represented by a scalar. 
-The output motion should faithfully animate the input action, and at the same time be natural and reflect the distribution of the dataset on which the model is trained.
+          We also demonstrate completion and editing. By adapting diffusion image-inpainting, we set a motion prefix and suffix, and use our model to fill in the gap. 
+Doing so under a textual condition guides MDM to fill the gap with a specific motion that still maintains the semantics of the original input. 
+By performing inpainting in the joints space rather than temporally, we also demonstrate the semantic editing of specific body parts, without changing the others. 
           </p>
         </div>
       </div>
     </div>
-    <!~~/ Abstract. ~~>
+    <!--/ Abstract. -->
   </div>
 </section> 
 
 
-
-
-
 <section class="hero is-small">
-  <div class="hero-body">
-    <div class="container">
-      <div id="results-carousel" class="carousel results-carousel">
+
       <div class="column is-centered has-text-centered">
-      	<p><b> (Class) Run</b></p>
-                <video poster="" id="tree" autoplay controls muted loop height="100%">
-          <source src="static/figures/run.mp4"
+      	<h3 class="title is-4">Upper body editing (lower body is fixed)</h3>
+      	<p>(Blue=Input, Gold=Synthesis)</p>
+         <video poster="" id="tree" autoplay controls muted loop height="100%">
+          <source src="static/figures/edit_upper.mp4"
           type="video/mp4">
         </video>
       </div>
+
+</section>
+
+
+<section class="section hero is-small">
+<div class="container is-max-desktop">
       <div class="column is-centered has-text-centered">
-      	<p><b> (Class) Warm up</b></p>
-                <video poster="" id="tree" autoplay controls muted loop height="100%">
-          <source src="static/figures/warmup.mp4"
+      	<h3 class="title is-4">Motion In-Betweening</h3>
+      	<p>(Blue=Input, Gold=Synthesis)</p>
+         <video poster="" id="tree" autoplay controls muted loop height="100%">
+          <source src="static/figures/in_between.mp4"
           type="video/mp4">
         </video>
       </div>
-      <div class="column is-centered has-text-centered">
-      	<p><b> (Class) Sit</b></p>
-                <video poster="" id="tree" autoplay controls muted loop height="100%">
-          <source src="static/figures/sit.mp4"
-          type="video/mp4">
-        </video>
-      </div>
-      <div class="column is-centered has-text-centered">
-      	<p><b> (Class) Jump</b></p>
-                <video poster="" id="tree" autoplay controls muted loop height="100%">
-          <source src="static/figures/jump.mp4"
-          type="video/mp4">
-        </video>
-      </div>
-  </div>
-</div>
 </div>
 </section>
 
- -->
+
 
 <!-- 
 <section class="section" id="BibTeX">
