@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta property="og:title" content="MotionCLIP: Exposing Human Motion Generation to CLIP Space"/>
+  <meta property="og:url" content="https://motionclip.github.io/motionclip/"/>
+  <meta property="og:image:width" content="1200"/>
+  <meta property="og:image:height" content="630"/>
+
+
+  <title>Human Motion Diffusion Model</title>
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+  rel="stylesheet">
+  <link rel="icon" href="static/figures/icon2.png">
+
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script src="static/js/bulma-carousel.min.js"></script>
+  <script src="static/js/bulma-slider.min.js"></script>
+  <script src="static/js/index.js"></script>
+</head>
+<body>
+
+
+<section class="publication-header">
+  <div class="hero-body">
+    <div class="container is-max-widescreen">
+      <!-- <div class="columns is-centered"> -->
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Human Motion Diffusion Model</h1>
+          <h1 class="title is-1 publication-title">MDM</h1>
+          <div class="is-size-3 publication-authors">
+            <!-- <span class="eql-cntrb"><small><br><sup>*</sup>Indicates Equal Contribution</small></span> -->
+          </div>
+        </div>
+    </div>
+  </div>
+
+</section>
+
+<section class="publication-author-block">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><a href="https://www.semanticscholar.org/author/Guy-Tevet/81493694" target="_blank">Guy Tevet</a>,</span>
+                        <span class="author-block"><a href="https://scholar.google.com/citations?hl=iw&user=STnhSioAAAAJ&view_op=list_works&sortby=pubdate" target="_blank">Sigal Raab</a>,</span>
+            <span class="author-block"><a href="https://scholar.google.com/citations?user=VNDhTycAAAAJ&amp;hl=en" target="_blank">Brian Gordon</a>,</span>
+            <span class="author-block"><a href="https://www.linkedin.com/in/yonatan-shafir-2811a3148/" target="_blank">Yonatan Shafir</a>,</span>
+            
+            <span class="author-block"><a href="https://www.cs.tau.ac.il/~amberman/" target="_blank">Amit H. Bermano</a>,</span>
+            <span class="author-block"><a href="https://danielcohenor.com/" target="_blank">Daniel Cohen-Or</a></span>
+            
+            
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">Tel Aviv University, Israel</span> 
+            <!-- <span class="eql-cntrb"><small><br><sup>*</sup>Indicates Equal Contribution</small></span> -->
+          </div>
+          
+
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+<!-- 
+              <span class="link-block">
+                <a href="http://arxiv.org/abs/2203.08063" target="_blank"
+                  class="external-link button is-normal is-rounded">
+                  <span class="icon">
+                    <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+ -->
+              
+              <!-- PDF Link. -->
+<!--              <span class="link-block">-->
+<!--                <a href="static/source/MotionCLIP.pdf" target="_blank"-->
+<!--                  class="external-link button is-normal is-rounded">-->
+<!--                  <span class="icon">-->
+<!--                    <i class="fas fa-file-pdf"></i>-->
+<!--                  </span>-->
+<!--                  <span>Paper</span>-->
+<!--                </a>-->
+<!--              </span>-->
+<!--                            </span>-->
+              <!-- </span> -->
+              <!-- Colab Link. -->
+              <span class="link-block">
+                <a href="https://github.com/GuyTevet/motion-diffusion-model" target="_blank"
+                class="external-link button is-normal is-rounded">
+                <span class="icon">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>Code</span>
+              </a>
+
+              </span>
+              <!-- </span> -->
+              <!-- Colab Link. -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 
+<section class="hero is-small">
+  <!~~ <div class="hero-body"> ~~>
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <!~~ <div id="results-carousel" class="carousel results-carousel"> ~~>
+      <div class="container">
+      <div class="item">
+      <div class="column is-centered has-text-centered">
+        <img src="static/figures/teaser.png" alt="MotionCLIP"/>
+      </div>
+
+    </div>
+  </div>
+ <!~~  </div> ~~>
+  </div>
+  </div>
+ <!~~  </div> ~~>
+</section>
+ -->
+
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <div class="item">
+          <p style="margin-bottom: 30px">
+        <video poster="" id="tree" autoplay controls muted loop height="100%">
+          <source src="static/figures/MDM-page.mp4"
+          type="video/mp4">
+        </video>
+        </p>
+        </div>
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Natural and expressive human motion generation is the holy grail of computer animation.
+It is a challenging task, due to the diversity of possible motion, human perceptual sensitivity to it, and the difficulty of accurately describing it. Therefore, current generative solutions are either low-quality or limited in expressiveness. 
+Diffusion models, which have already shown remarkable generative capabilities in other domains, are promising candidates for human motion due to their many-to-many nature, but they tend to be resource hungry and hard to control. 
+In this paper, we introduce Motion Diffusion Model (MDM), a carefully adapted classifier-free diffusion-based generative model for the human motion domain. 
+MDM is transformer-based, combining insights from motion generation literature. 
+A notable design-choice is the prediction of the sample, rather than the noise, in each diffusion step. This facilitates the use of established geometric losses on the locations and velocities of the motion, such as the foot contact loss. As we demonstrate, MDM is a generic approach, enabling different modes of conditioning, and different generation tasks. We show that our model is trained with lightweight resources and yet achieves state-of-the-art results on leading benchmarks for text-to-motion and action-to-motion.</p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+  </div>
+</section>
+
+
+
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container">
+
+      <div class="column is-centered has-text-centered">
+        <img src="static/figures/mdm_arch.png" alt="cars peace"/>
+      </div>
+     
+    
+  </div>
+</div>
+</div>
+</section>
+
+
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+<!--         <h2 class="title is-3">How does it work?</h2> -->
+        <div class="content has-text-justified">
+          <p>
+The MDM framework has a generic design enabling different forms of conditioning. 
+We showcase three tasks: text-to-motion, action-to-motion, and unconditioned generation. 
+We train the model in a classifier-free manner, which enables trading-off diversity to fidelity, and sampling both conditionally and unconditionally from the same model.
+In the text-to-motion task, our model generates coherent motions that achieve state-of-the-art results on the HumanML3D and KIT benchmarks. 
+Moreover, our user study shows that human evaluators 
+prefer our generated motions over real motions 42% of the time.
+In action-to-motion, MDM outperforms the state-of-the-art, even though they were specifically designed for this task, 
+on the common HumanAct12 and UESTC benchmarks.
+</p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+  </div>
+</section> 
+
+
+<!-- 
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container">
+
+      <div class="column is-centered has-text-centered">
+        <img src="static/figures/sampling.png" alt="cars peace"/>
+      </div>
+     
+    
+  </div>
+</div>
+</div>
+</section>
+ -->
+
+
+
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div id="results-carousel" class="carousel results-carousel">
+      <div class="column is-centered has-text-centered">
+      	<p><b> “A person walks forward, bends down to pick something up off the ground.”</b></p>
+                <video poster="" id="tree" autoplay controls muted loop height="100%">
+          <source src="static/figures/bend.mp4"
+          type="video/mp4">
+        </video>
+      </div>
+      <div class="column is-centered has-text-centered">
+      	<p><b>“a person turns to his right and paces back and forth.”</b></p>
+                <video poster="" id="tree" autoplay controls muted loop height="100%">
+          <source src="static/figures/turn.mp4"
+          type="video/mp4">
+      </div>
+      <div class="column is-centered has-text-centered">
+      	<p><b>“A person punches in a manner consistent with martial arts.”</b></p>
+                <video poster="" id="tree" autoplay controls muted loop height="100%">
+          <source src="static/figures/punch.mp4"
+          type="video/mp4">
+      </div>
+  </div>
+</div>
+</div>
+</section>
+
+
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Text-to-Motion</h2>
+          <p>
+Text-to-motion is the task of generating motion given an input text prompt. 
+The output motion is expected to be both implementing the textual description, and a valid sample from the data distribution (i.e. adhering to general human abilities and the rules of physics). 
+In addition, for each text prompt, we also expect a distribution of motions matching it, rather than just a single result.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+  </div>
+</section> 
+
+
+
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div id="results-carousel" class="carousel results-carousel">
+      <div class="column is-centered has-text-centered">
+      	<p><b> “A person kicks.”</b></p>
+                <video poster="" id="tree" autoplay controls muted loop height="100%">
+          <source src="static/figures/kick1.mp4"
+          type="video/mp4">
+        </video>
+      </div>
+      <div class="column is-centered has-text-centered">
+      	<p><b> “A person kicks.”</b></p>
+                <video poster="" id="tree" autoplay controls muted loop height="100%">
+          <source src="static/figures/kick2.mp4"
+          type="video/mp4">
+        </video>
+      </div>
+            <div class="column is-centered has-text-centered">
+      	<p><b> “A person kicks.”</b></p>
+                <video poster="" id="tree" autoplay controls muted loop height="100%">
+          <source src="static/figures/kick3.mp4"
+          type="video/mp4">
+        </video>
+      </div>
+            <div class="column is-centered has-text-centered">
+      	<p><b> “A person kicks.”</b></p>
+                <video poster="" id="tree" autoplay controls muted loop height="100%">
+          <source src="static/figures/kick4.mp4"
+          type="video/mp4">
+        </video>
+      </div>
+            <div class="column is-centered has-text-centered">
+      	<p><b> “A person kicks.”</b></p>
+                <video poster="" id="tree" autoplay controls muted loop height="100%">
+          <source src="static/figures/kick5.mp4"
+          type="video/mp4">
+        </video>
+      </div>
+            <div class="column is-centered has-text-centered">
+      	<p><b> “A person kicks.”</b></p>
+                <video poster="" id="tree" autoplay controls muted loop height="100%">
+          <source src="static/figures/kick6.mp4"
+          type="video/mp4">
+        </video>
+      </div>
+            <div class="column is-centered has-text-centered">
+      	<p><b> “A person kicks.”</b></p>
+                <video poster="" id="tree" autoplay controls muted loop height="100%">
+          <source src="static/figures/kick7.mp4"
+          type="video/mp4">
+        </video>
+      </div>
+            <div class="column is-centered has-text-centered">
+      	<p><b> “A person kicks.”</b></p>
+                <video poster="" id="tree" autoplay controls muted loop height="100%">
+          <source src="static/figures/kick8.mp4"
+          type="video/mp4">
+        </video>
+      </div>
+            <div class="column is-centered has-text-centered">
+      	<p><b> “A person kicks.”</b></p>
+                <video poster="" id="tree" autoplay controls muted loop height="100%">
+          <source src="static/figures/kick9.mp4"
+          type="video/mp4">
+        </video>
+      </div>
+
+  </div>
+</div>
+</div>
+</section>
+
+
+
+
+<!-- 
+<section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>
+    @article{tevet2022motionclip,
+    title={MotionCLIP: Exposing Human Motion Generation to CLIP Space},
+    author={Tevet, Guy and Gordon, Brian and Hertz, Amir and Bermano, Amit H and Cohen-Or, Daniel},
+    journal={arXiv preprint arXiv:2203.08063},
+    year={2022}
+    }</code></pre>
+    </div>
+</section>
+ -->
+
+
+
+<footer class="footer">
+ <!--  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+      href="https://homes.cs.washington.edu/~kpar/nerfies/videos/nerfies_paper.pdf">
+      <i class="fas fa-file-pdf"></i>
+    </a>
+    <a class="icon-link" href="https://github.com/keunhong" class="external-link" disabled>
+      <i class="fab fa-github"></i>
+    </a>
+  </div> -->
+  <div class="columns is-centered">
+    <div class="column is-8">
+      <div class="content">
+        <p>
+          This website is licensed under a <a rel="license"
+          href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+        Commons Attribution-ShareAlike 4.0 International License</a>.
+      </p>
+      <p>
+        Website source code based on the <a href="https://nerfies.github.io/"> Nerfies</a> project page. If you want to reuse their <a
+        href="https://github.com/nerfies/nerfies.github.io">source code</a>, please credit them appropriately.
+      </p>
+    </div>
+  </div>
+</div>
+</div>
+</footer>
+
+
+  <script type="text/javascript">
+    var sc_project=12351448; 
+    var sc_invisible=1; 
+    var sc_security="c676de4f"; 
+  </script>
+  <script type="text/javascript"
+  src="https://www.statcounter.com/counter/counter.js"
+  async></script>
+  <noscript><div class="statcounter"><a title="Web Analytics"
+    href="https://statcounter.com/" target="_blank"><img
+    class="statcounter"
+    src="https://c.statcounter.com/12351448/0/c676de4f/1/"
+    alt="Web Analytics"></a></div></noscript>
+    <!-- End of Statcounter Code -->
+
+  </body>
+  </html>
